@@ -1,13 +1,13 @@
 import streamlit as st
 from streamlit_chat import message
 import requests
-import spacy_streamlit
+import spacy_streamlit as spacy
 import pickle
 
 with open('chatbot.pkl', 'rb') as f:
     vect, model = pickle.load(f)
 
-#nlp = spacy.load("chatbotner/saved_model/")
+nlp = spacy.load("saved_model/")
 
 st.set_page_config(
     page_title="Streamlit Chat - Demo",
@@ -60,7 +60,7 @@ if user_input:
 
     elif intent == 5:
         respinse = "NER file to be uploaded"
-        '''
+        
         doc = nlp(user_input)
         for i in doc.ents:
             
@@ -83,7 +83,7 @@ if user_input:
                     response = 'Driver monitoring system available !'
                 elif 'fall detection' in i.text.lower():
                     response = 'Fall detection system available !'
-           '''     
+              
     elif intent == 6:
         response = "hmmm ok"
 
