@@ -89,6 +89,8 @@ if user_input:
                 elif 'train detection' in i.text.lower():
                     train_no = get_train()
                     response = 'Your train no is ' + str(train_no)
+                    train_no.empty()
+    
                     
     elif intent == 6:
         response = "hmmm ok"
