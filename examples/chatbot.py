@@ -3,6 +3,7 @@ from streamlit_chat import message
 import requests
 import spacy_streamlit
 import pickle
+import scikit-learn
 
 with open('chatbot.pkl', 'rb') as f:
     vect, model = pickle.load(f)
