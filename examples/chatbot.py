@@ -1,7 +1,7 @@
 import streamlit as st
 from streamlit_chat import message
 import requests
-import streamlit_spacy
+import spacy_streamlit
 import pickle
 
 with open('chatbot.pkl', 'rb') as f:
