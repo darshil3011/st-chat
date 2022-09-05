@@ -63,7 +63,6 @@ if user_input:
         response = "Ok, great. What can I do for you ?"
 
     elif intent == 5:
-        respinse = "NER file to be uploaded"
         
         doc = nlp(user_input)
         for i in doc.ents:
@@ -87,7 +86,7 @@ if user_input:
                     response = 'Driver monitoring system available !'
                 elif 'fall detection' in i.text.lower():
                     response = 'Fall detection system available !'
-                elif 'think in bytes' in i.text.lower():
+                elif 'train detection' in i.text.lower():
                     train_no = get_train()
                     response = 'Your train no is ' + str(train_no)
                     
