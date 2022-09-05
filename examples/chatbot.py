@@ -43,8 +43,9 @@ def get_train():
     #    text_input_container.empty()
     train = text_input_container.selectbox(
      'Select train no',
-     ('12345', '443245', '66453', '99829', '88472', '00243'))
-    text_input_container.empty()
+     ('0000','12345', '443245', '66453', '99829', '88472', '00243'))
+    if train != '0000':
+        text_input_container.empty()
     return train
       
 
