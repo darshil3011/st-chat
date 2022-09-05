@@ -38,11 +38,15 @@ def get_text():
 
 def get_train():
     text_input_container = st.empty()
-    train = text_input_container.text_input("Enter train no:")
-    if train != '':
-        text_input_container.empty()
+    #train = text_input_container.text_input("Enter train no:")
+    #if train != '':
+    #    text_input_container.empty()
+    train = text_input_container.selectbox(
+     'Select train no',
+     ('12345', '443245', '66453', '99829, '88472', '00243'))
+    text_input_container.empty()
     return train
-        
+      
 
 user_input = get_text()
 
