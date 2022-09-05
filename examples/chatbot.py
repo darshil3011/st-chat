@@ -37,9 +37,9 @@ def get_text():
     return input_text 
 
 def get_train():
-    train_no = st.text_input("You: ","Enter train No:", key="input_train")
-    return train_no
-
+    text_input_container = st.empty()
+    train = text_input_container.text_input("Enter train no:")
+    return train
 
 user_input = get_text()
 
@@ -89,7 +89,7 @@ if user_input:
                 elif 'train detection' in i.text.lower():
                     train_no = get_train()
                     response = 'Your train no is ' + str(train_no)
-                    train_no.empty()
+                    text_input_container.empty()
     
                     
     elif intent == 6:
