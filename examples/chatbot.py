@@ -36,6 +36,10 @@ def get_text():
     input_text = st.text_input("You: ","Hello, how are you?", key="input")
     return input_text 
 
+def get_train():
+    train_no = st.text_input("You: ","Enter train No:", key="input")
+    return train_no
+
 
 user_input = get_text()
 
@@ -83,7 +87,10 @@ if user_input:
                     response = 'Driver monitoring system available !'
                 elif 'fall detection' in i.text.lower():
                     response = 'Fall detection system available !'
-              
+                elif 'think in bytes' in i.text.lower():
+                    train_no = get_train()
+                    response = 'Your train no is ' + str(train_no)
+                    
     elif intent == 6:
         response = "hmmm ok"
 
