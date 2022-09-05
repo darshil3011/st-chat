@@ -41,6 +41,8 @@ def get_train():
     train = text_input_container.text_input("Enter train no:")
     if train != '':
         text_input_container.empty()
+    return train
+        
 
 user_input = get_text()
 
