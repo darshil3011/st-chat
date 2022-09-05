@@ -37,7 +37,7 @@ def get_text():
     return input_text 
 
 def get_train():
-    train_no = st.text_input("You: ","Enter train No:", key="input")
+    train_no = st.text_input("You: ","Enter train No:", key="input_train")
     return train_no
 
 
