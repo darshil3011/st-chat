@@ -6,6 +6,7 @@ import pickle
 from bs4 import BeautifulSoup as bs
 import re
 from lxml import etree
+import pd
 
 with open('rail_chatbot.pkl', 'rb') as f:
     vect, model = pickle.load(f)
