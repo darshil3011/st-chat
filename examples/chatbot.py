@@ -107,7 +107,7 @@ def get_train():
     #    text_input_container.empty()
     train = text_input_container.selectbox(
      'Select train no',
-     ('00000 -  I am not travelling','12932 - Double Decker Express', '12901 - Gujarat Mail'))
+     ('12932 - Double Decker Express', '12901 - Gujarat Mail', '00000 - I am not travelling'))
     if train != '00000 - I am not travelling':
         text_input_container.empty()
     train = train[0:5]
