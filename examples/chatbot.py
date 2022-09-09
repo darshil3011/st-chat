@@ -150,12 +150,11 @@ if user_input:
         train_input = st.session_state.train
         coach_line, departure_station, arrival_station, station_list = train_info(int(train_input))
         location = get_loc()
-        if location != '':
-            for i in station_list:
-                if location in str(i).lower():
-                    output = i
-            #station_table = pd.DataFrame.from_dict(station_list, orient='columns')
-            response = str(output)
+        for i in station_list:
+            if location in str(i).lower():
+                output = i
+        #station_table = pd.DataFrame.from_dict(station_list, orient='columns')
+        response = str(output)
 
     elif intent == 5:
         response = "hmmm.. what else ?" 
@@ -188,9 +187,9 @@ if user_input:
         
         response = " train info :"                 
 
-         
-    st.session_state.past.append(user_input)
-    st.session_state.generated.append(response)
+    if st.session_state.generated != '':
+        st.session_state.past.append(user_input)
+        st.session_state.generated.append(response)
 
 if st.session_state['generated']:
 
