@@ -4,3 +4,4 @@ requests
 spacy==2.*
 scikit-learn==0.24.2
 bs4
+lxml
