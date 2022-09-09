@@ -138,7 +138,8 @@ if user_input:
         response = "Ok, great. What can I do for you ?"
         
     elif intent == 4: 
-        coach_line, departure_station, arrival_station, station_list = train_info(train_no)
+        train_input = st.session_state.train
+        coach_line, departure_station, arrival_station, station_list = train_info(int(train_input))
         station_table = pd.DataFrame.from_dict(station_list, orient='columns')
         response = station_table
         
@@ -156,7 +157,7 @@ if user_input:
     elif intent == 8:
         train_input = st.session_state.train
         coach_line, departure_station, arrival_station, station_list = train_info(int(train_input))
-        response = "Your train has departed from "+str(departure_station)+"and will arrive to "+str(arrival_station) 
+        response = "Your train has departed from "+str(departure_station)+" and will arrive to "+str(arrival_station) 
         
     elif intent == 9:
         response = "Unfortunately I cant do that for you right now !"
