@@ -141,8 +141,8 @@ if user_input:
     elif intent == 4: 
         train_input = st.session_state.train
         coach_line, departure_station, arrival_station, station_list = train_info(int(train_input))
-        station_table = pd.DataFrame.from_dict(station_list, orient='columns')
-        response = station_table
+        #station_table = pd.DataFrame.from_dict(station_list, orient='columns')
+        response = station_list
         
     elif intent == 5:
         response = "hmmm.. what else ?" 
