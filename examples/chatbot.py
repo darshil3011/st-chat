@@ -149,7 +149,7 @@ if user_input:
                 output = i
         #station_table = pd.DataFrame.from_dict(station_list, orient='columns')
         d = output
-        output_string = At ' + d['name'][0] + ' train will arrive on ' + str(d['platform']) + ' at ' + str(d['arrival']) + ' and will hault for ' + str(d['hault'])
+        output_string = 'At ' + d['name'][0] + ' train will arrive on ' + str(d['platform']) + ' at ' + str(d['arrival']) + ' and will hault for ' + str(d['hault'])
         response = str(output_string)
 
     elif intent == 5:
