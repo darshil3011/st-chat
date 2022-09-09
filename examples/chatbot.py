@@ -36,6 +36,21 @@ def chat(text):
     
     return intent
 
+def pnr_status(pnr):
+    url = "https://www.railmitra.com/pnr-status?pnr=" + str(pnr)
+    print(url)
+    response = requests.get(url)
+    soup = bs(response.content, 'html.parser') 
+
+    #to get full data
+    # rev_div = soup.findAll("table",attrs={"class","table table-striped table-sm"})
+    # print(rev_div)
+
+    dom = etree.HTML(str(soup))
+    ticket = dom.xpath('/html/body/main/section[1]/div/div/div/div/div[1]/div[1]/div[2]/div/div[6]/table/tbody/tr/td/text()')
+    
+    return ticket
+
 def train_info(train_no):
     # CODE FOR TRAIN COACH & TRAIN DEPARTURE,ARRIVAL 
     try:
@@ -121,7 +136,14 @@ def get_loc():
         text_input_container.empty()
     
     return location
-      
+
+def get_pnr():
+    text_input_container = st.empty()
+    pnr = text_input_container.text_input("Enter PNR no:")
+    if pnr != '':
+        text_input_container.empty()
+    
+    return pnr
 
 user_input = get_text()
 
@@ -185,14 +207,16 @@ if user_input:
         response = "Here are few emergency contacts : Railway Enquiry : 139, Railway Police : 182, Accident and Safety : 1072, IRCTC Tourism : 1800 110 139" 
 
     elif intent == 11:
-        response = "Your PNR status is : booking confirmed, seat no S4/18 (LB) -  chart prepared" 
+        pnr = get_pnr()
+        ticket = pnr_status(pnr)
+        response = "Your PNR status is : "+str(ticket) 
         
     elif intent == 12:
         train_input = st.session_state.train
         coach_line, departure_station, arrival_station, station_list = train_info(int(train_input))
         
         response = " train info :"                 
-
+    
     if st.session_state.generated != '':
         st.session_state.past.append(user_input)
         st.session_state.generated.append(response)
