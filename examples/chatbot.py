@@ -214,7 +214,7 @@ if user_input:
         for i in range (0, len(ticket),4):
             p = p+1
             required_info = ticket[i:i+4]
-            entire_ticket.append("PASSENGER "+str(p)+"BOOKING STATUS : "+required_info[1]+ ", CURRENT STATUS : "+required_info[2]+", CONFIRM STATUS :"+required_info[3])
+            entire_ticket.append(" PASSENGER "+str(p)+", BOOKING STATUS : "+required_info[1]+ ", CURRENT STATUS : "+required_info[2]+", CONFIRM STATUS :"+required_info[3])
         response = "Your PNR status is : "+str(entire_ticket) 
         
     elif intent == 12:
