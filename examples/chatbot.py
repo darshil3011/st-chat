@@ -20,6 +20,9 @@ st.set_page_config(
 st.header("Chatbot")
 st.markdown("NLP Chatbot with Named Entity Recognition")
 
+if 'train' not in st.session_state:
+    st.session_state.train = ''
+
 if 'generated' not in st.session_state:
     st.session_state['generated'] = []
 
