@@ -101,7 +101,7 @@ def train_info(train_no):
     return coach_line, departure_station, arrival_station, station_list
 
 def get_text():
-    input_text = st.text_input("You: ","Hello, how are you?", key="input")
+    input_text = st.text_input("You: ","Hello !", key="input")
     return input_text 
 
 def get_train():
