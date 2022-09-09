@@ -116,6 +116,14 @@ def get_train():
         text_input_container.empty()
     train = train[0:5]
     return train
+
+def get_loc():
+    text_input_container = st.empty()
+    location = text_input_container.text_input("Enter current station:")
+    if location != '':
+        text_input_container.empty()
+    
+    return location
       
 
 user_input = get_text()
@@ -141,8 +149,12 @@ if user_input:
     elif intent == 4: 
         train_input = st.session_state.train
         coach_line, departure_station, arrival_station, station_list = train_info(int(train_input))
+        location = get_loc()
+        for i in station_list:
+            if location in str(i).lower():
+                output = i
         #station_table = pd.DataFrame.from_dict(station_list, orient='columns')
-        response = str(station_list)
+        response = str(output)
         
     elif intent == 5:
         response = "hmmm.. what else ?" 
