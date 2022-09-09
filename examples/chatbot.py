@@ -209,7 +209,6 @@ if user_input:
     elif intent == 11:
         pnr = get_pnr()
         ticket = pnr_status(pnr)
-        number of passengers = len(ticket)/4
         entire_ticket = []
         p = 0
         for i in range (0, len(ticket),4):
