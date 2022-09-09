@@ -117,12 +117,14 @@ def get_train():
 user_input = get_text()
 
 if user_input:
+   
     
     intent = chat(user_input)
   
     if intent == 0: 
         response = "I am your travel partner. I can answer all your queries related to train journey. Lets start with your train name and PNR no."
         train_no = get_train()
+        st.session_state.train = train_no
         response = 'Your train no is ' + str(train_no)
 
     elif intent == 1: 
@@ -148,7 +150,8 @@ if user_input:
         response = "glad that I helped you. Bye ! Take care." 
     
     elif intent == 7: 
-        coach_line, departure_station, arrival_station, station_list = train_info(train_no)
+        train_input = st.session_state.train
+        coach_line, departure_station, arrival_station, station_list = train_info(int(train_input))
         response = "It seems you need help to reach your coach position. Here is the coach lineup for your train:" + str(coach_line)  
 
     elif intent == 8:
