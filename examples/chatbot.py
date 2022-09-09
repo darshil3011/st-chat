@@ -124,19 +124,15 @@ if user_input:
     
     intent = chat(user_input)
   
-    if intent == 0: 
+    if intent == 0 or intent == 2: 
         response = "I am your travel partner. I can answer all your queries related to train journey. Lets start with your train name and PNR no."
         train_no = get_train()
         st.session_state.train = train_no
-        response = 'Your train no is ' + str(train_no)
+        if train_no != '00000':
+            response = 'I am your travel partner. I can answer all your queries related to train journey. Lets start with your train name and PNR no. Your train no is ' + str(train_no)
 
     elif intent == 1: 
         response = "We are available 24/7 to help you. Reach out to us on +91.9999 9999 or email us at enquire@thinkinbytes.in"
-
-    elif intent == 2: 
-        response = "Hey, nice to meet you ! I am your travel partner. I can answer all your queries related to train journey. Lets start with your train name and PNR no."
-        train_no = get_train()
-        response = 'Your train no is ' + str(train_no)  
             
     elif intent == 3:
         response = "Ok, great. What can I do for you ?"
@@ -158,7 +154,8 @@ if user_input:
         response = "It seems you need help to reach your coach position. Here is the coach lineup for your train:" + str(coach_line)  
 
     elif intent == 8:
-        coach_line, departure_station, arrival_station, station_list = train_info(train_no)
+        train_input = st.session_state.train
+        coach_line, departure_station, arrival_station, station_list = train_info(int(train_input))
         response = "Your train has departed from "+str(departure_station)+"and will arrive to "+str(arrival_station) 
         
     elif intent == 9:
@@ -171,7 +168,8 @@ if user_input:
         response = "Your PNR status is : booking confirmed, seat no S4/18 (LB) -  chart prepared" 
         
     elif intent == 12:
-        coach_line, departure_station, arrival_station, station_list = train_info(train_no)
+        train_input = st.session_state.train
+        coach_line, departure_station, arrival_station, station_list = train_info(int(train_input))
         
         response = " train info :"                 
 
