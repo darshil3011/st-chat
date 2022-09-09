@@ -3,18 +3,21 @@ from streamlit_chat import message
 import requests
 import spacy 
 import pickle
+from bs4 import BeautifulSoup as bs
+import re
+from lxml import etree
 
-with open('chatbot.pkl', 'rb') as f:
+with open('rail_chatbot.pkl', 'rb') as f:
     vect, model = pickle.load(f)
 
-nlp = spacy.load("saved_model/")
+#nlp = spacy.load("saved_model/")
 
 st.set_page_config(
     page_title="Streamlit Chat - Demo",
     page_icon=":robot:"
 )
 
-st.header("Streamlit Chat - Demo")
+st.header("Chatbot")
 st.markdown("NLP Chatbot with Named Entity Recognition")
 
 if 'generated' not in st.session_state:
@@ -29,6 +32,70 @@ def chat(text):
     
     return intent
 
+def train_info(train_no):
+    # CODE FOR TRAIN COACH & TRAIN DEPARTURE,ARRIVAL 
+    
+    url = "https://www.trainman.in/coach-position/" + str(train_no)
+    response = requests.get(url)
+    soup = bs(response.content, 'html.parser') 
+    rev_div = soup.findAll("div",attrs={"class","text-justify mx-3 ng-star-inserted"}) 
+    coach_line = []
+    for j in range(len(rev_div)):
+    # finding all the p tags to fetch only the review text
+        coach_line.append(rev_div[j].find("b").text)
+    #print("Coach::",coach_line)
+
+    #code for departed station
+    url_trainstatus = "https://www.railmitra.com/live-train-running-status/" + str(train_no)
+    trainstatus_response = requests.get(url_trainstatus)
+    soup_train = bs(trainstatus_response.content, 'html.parser') 
+    trainstatus_rev_div = soup_train.findAll("div",attrs={"class","card cardResult"})
+    trainstatus_rev_div = str(trainstatus_rev_div)
+    # print("trainstatus_rev_div:",trainstatus_rev_div)
+    departure_station = re.search(r'from<strong>(.*?)</strong>', trainstatus_rev_div).group(1)
+    #print("Departed From :",departure_station)
+
+    #code for arrival station
+    navigation = soup_train.findAll("div",attrs={"class","well well-sm"})
+    dummy_arrstation = navigation
+    navigation = str(navigation)
+    arr_station = soup_train.findAll("div",attrs={"class","col-7 col-md-4"})
+    arr_station = str(arr_station)
+    arrival_station = re.search(r'<div class="col-7 col-md-4"><span class="ind-crossed"><i aria-hidden="true" class="fa fa-circle-thin"></i></span>(.*?)</div>',arr_station).group(1)
+    #print("Arrival_station at :",arrival_station)
+
+    #code for platform details like arrival time, departed time,haukt and platform number
+    url_trainstatus = "https://www.trainman.in/train/"+str(train_no)
+    trainstatus_response = requests.get(url_trainstatus)
+    soup_train = bs(trainstatus_response.content, 'html.parser') 
+    dom = etree.HTML(str(soup_train))
+    newdetail = soup_train.findAll("tr",attrs={"class","ng-star-inserted"})
+    newdetail = str(newdetail)
+    station_list = []    
+    for i in range(1,100):
+        current_list = []
+        n2 = dom.xpath('/html/body/app-root/app-wrapper/div/main/train-schedule/div[2]/div[1]/div/div[3]/table/tbody/tr['+ str(i) +']/td[2]/strong/text()')
+        t2 = dom.xpath('/html/body/app-root/app-wrapper/div/main/train-schedule/div[2]/div[1]/div/div[3]/table/tbody/tr['+ str(i) +']/td[3]/div[1]/time/text()')
+        d2 = dom.xpath('/html/body/app-root/app-wrapper/div/main/train-schedule/div[2]/div[1]/div/div[3]/table/tbody/tr['+ str(i) +']/td[3]/div[2]/time/text()')
+        h2 = dom.xpath('/html/body/app-root/app-wrapper/div/main/train-schedule/div[2]/div[1]/div/div[3]/table/tbody/tr['+ str(i) +']/td[4]/time/text()')
+        p2 = dom.xpath('/html/body/app-root/app-wrapper/div/main/train-schedule/div[2]/div[1]/div/div[3]/table/tbody/tr['+ str(i) +']/td[7]/text()')
+
+        current_list.append(n2) #add name of station
+        current_list.append(t2) #add arrival time
+        current_list.append(d2) #add departure time
+        current_list.append(h2) #add hault duration
+        current_list.append(p2) #add platform number
+        
+        if len(n2) != 0 :
+            station_info = {'name' : n2, 'arrival' : t2, 'departure' : d2, 'hault' : h2, 'platform' : p2}
+
+        elif len(n2) == 0:
+            break
+
+        station_list.append(station_info)
+        
+    return coach_line, departure_station, arrival_station, station_list
+
 def get_text():
     input_text = st.text_input("You: ","Hello, how are you?", key="input")
     return input_text 
@@ -40,7 +107,7 @@ def get_train():
     #    text_input_container.empty()
     train = text_input_container.selectbox(
      'Select train no',
-     ('0000','12345', '443245', '66453', '99829', '88472', '00243'))
+     ('0000 -  I am not travelling','12932 - Double Decker Express', '12901 - Gujarat Mail'))
     if train != '0000':
         text_input_container.empty()
     return train
@@ -52,56 +119,55 @@ if user_input:
     
     intent = chat(user_input)
   
-    if intent == 0:
-        response = "Teksun is a product based as well as service based company. We provide services across different domains like firmware, AI, web & app development etc"
+    if intent == 0: 
+        response = "I am your travel partner. I can answer all your queries related to train journey. Lets start with your train name and PNR no."
+        train_no = get_train()
+        response = 'Your train no is ' + str(train_no)
 
-    elif intent == 1:
-        response = "We are available 24/7 to help you. Reach out to us on +91.9999 9999 or email us at help@teksun.com"
+    elif intent == 1: 
+        response = "We are available 24/7 to help you. Reach out to us on +91.9999 9999 or email us at enquire@thinkinbytes.in"
 
-    elif intent == 2:
-        response = "We can customise our existing products to cater your requirements or build something from scratch for you."
-
-    elif intent == 3:
-        response = "Hey, nice to meet you ! I am Teksun Bot. What is your name?"
-
-    elif intent == 4:
-        response = "Ok, great. What can I do for you ?"
-
-    elif intent == 5:
-        
-        doc = nlp(user_input)
-        for i in doc.ents:
+    elif intent == 2: 
+        response = "Hey, nice to meet you ! I am your travel partner. I can answer all your queries related to train journey. Lets start with your train name and PNR no."
+        train_no = get_train()
+        response = 'Your train no is ' + str(train_no)  
             
-            if i.label_ == 'product':
-                if 'fire' in i.text.lower() or 'smoke' in i.text.lower():
-                    response = "fire & smoke detection is available !"
-                elif 'game' in i.text.lower() or 'gamification' in i.text.lower():
-                    response = "AI gamification is available !"
-                elif 'safety gear' in i.text.lower() or 'gear' in i.text.lower():
-                    response = "Safety Gear detection is available !"
-                elif 'intrusion' in i.text.lower():
-                    response = "Intrusion detection available !"
-                elif 'occupancy' in i.text.lower():
-                    response = "Car occupancy and occupancy detection available !"
-                elif 'tejas' in i.text.lower() or 'tejas care' in i.text.lower():
-                    response = "Teksun Tejas is available !"
-                elif 'teksun telep' in i.text.lower() or 'telep' in i.text.lower():
-                    response = "Telep solutions available !"
-                elif 'driver' in i.text.lower() and 'monitor' in i.text.lower():
-                    response = 'Driver monitoring system available !'
-                elif 'fall detection' in i.text.lower():
-                    response = 'Fall detection system available !'
-                elif 'train detection' in i.text.lower():
-                    train_no = get_train()
-                    response = 'Your train no is ' + str(train_no)
-                    
+    elif intent == 3:
+        response = "Ok, great. What can I do for you ?"
+        
+    elif intent == 4: 
+        coach_line, departure_station, arrival_station, station_list = train_info(train_no)
+        station_table = pd.DataFrame.from_dict(station_list, orient='columns')
+        response = station_table
+        
+    elif intent == 5:
+        response = "hmmm.. what else ?" 
     
-                    
     elif intent == 6:
-        response = "hmmm ok"
+        response = "glad that I helped you. Bye ! Take care." 
+    
+    elif intent == 7: 
+        coach_line, departure_station, arrival_station, station_list = train_info(train_no)
+        response = "It seems you need help to reach your coach position. Here is the coach lineup for your train:" + str(coach_line)  
 
-    elif intent == 7:
-        response = "See you later ! Visit again. Glad to meet you"
+    elif intent == 8:
+        coach_line, departure_station, arrival_station, station_list = train_info(train_no)
+        response = "Your train has departed from "+str(departure_station)+"and will arrive to "+str(arrival_station) 
+        
+    elif intent == 9:
+        response = "Unfortunately I cant do that for you right now !"
+
+    elif intent == 10:
+        response = "Here are few emergency contacts : Railway Enquiry : 139, Railway Police : 182, Accident and Safety : 1072, IRCTC Tourism : 1800 110 139" 
+
+    elif intent == 11:
+        response = "Your PNR status is : booking confirmed, seat no S4/18 (LB) -  chart prepared" 
+        
+    elif intent == 12:
+        coach_line, departure_station, arrival_station, station_list = train_info(train_no)
+        
+        response = " train info :"                 
+
          
     st.session_state.past.append(user_input)
     st.session_state.generated.append(response)
