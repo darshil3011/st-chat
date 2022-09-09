@@ -83,12 +83,6 @@ def train_info(train_no):
         d2 = dom.xpath('/html/body/app-root/app-wrapper/div/main/train-schedule/div[2]/div[1]/div/div[3]/table/tbody/tr['+ str(i) +']/td[3]/div[2]/time/text()')
         h2 = dom.xpath('/html/body/app-root/app-wrapper/div/main/train-schedule/div[2]/div[1]/div/div[3]/table/tbody/tr['+ str(i) +']/td[4]/time/text()')
         p2 = dom.xpath('/html/body/app-root/app-wrapper/div/main/train-schedule/div[2]/div[1]/div/div[3]/table/tbody/tr['+ str(i) +']/td[7]/text()')
-
-        current_list.append(n2) #add name of station
-        current_list.append(t2) #add arrival time
-        current_list.append(d2) #add departure time
-        current_list.append(h2) #add hault duration
-        current_list.append(p2) #add platform number
         
         if len(n2) != 0 :
             station_info = {'name' : n2, 'arrival' : t2, 'departure' : d2, 'hault' : h2, 'platform' : p2}
@@ -154,7 +148,9 @@ if user_input:
             if location in str(i).lower():
                 output = i
         #station_table = pd.DataFrame.from_dict(station_list, orient='columns')
-        response = str(output)
+        d = output
+        output_string = At ' + d['name'][0] + ' train will arrive on ' + str(d['platform']) + ' at ' + str(d['arrival']) + ' and will hault for ' + str(d['hault'])
+        response = str(output_string)
 
     elif intent == 5:
         response = "hmmm.. what else ?" 
