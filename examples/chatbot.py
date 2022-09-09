@@ -38,59 +38,62 @@ def chat(text):
 
 def train_info(train_no):
     # CODE FOR TRAIN COACH & TRAIN DEPARTURE,ARRIVAL 
-    
-    url = "https://www.trainman.in/coach-position/" + str(train_no)
-    response = requests.get(url)
-    soup = bs(response.content, 'html.parser') 
-    rev_div = soup.findAll("div",attrs={"class","text-justify mx-3 ng-star-inserted"}) 
-    coach_line = []
-    for j in range(len(rev_div)):
-    # finding all the p tags to fetch only the review text
-        coach_line.append(rev_div[j].find("b").text)
-    #print("Coach::",coach_line)
+    try:
+        url = "https://www.trainman.in/coach-position/" + str(train_no)
+        response = requests.get(url)
+        soup = bs(response.content, 'html.parser') 
+        rev_div = soup.findAll("div",attrs={"class","text-justify mx-3 ng-star-inserted"}) 
+        coach_line = []
+        for j in range(len(rev_div)):
+        # finding all the p tags to fetch only the review text
+            coach_line.append(rev_div[j].find("b").text)
+        #print("Coach::",coach_line)
 
-    #code for departed station
-    url_trainstatus = "https://www.railmitra.com/live-train-running-status/" + str(train_no)
-    trainstatus_response = requests.get(url_trainstatus)
-    soup_train = bs(trainstatus_response.content, 'html.parser') 
-    trainstatus_rev_div = soup_train.findAll("div",attrs={"class","card cardResult"})
-    trainstatus_rev_div = str(trainstatus_rev_div)
-    # print("trainstatus_rev_div:",trainstatus_rev_div)
-    departure_station = re.search(r'from<strong>(.*?)</strong>', trainstatus_rev_div).group(1)
-    #print("Departed From :",departure_station)
+        #code for departed station
+        url_trainstatus = "https://www.railmitra.com/live-train-running-status/" + str(train_no)
+        trainstatus_response = requests.get(url_trainstatus)
+        soup_train = bs(trainstatus_response.content, 'html.parser') 
+        trainstatus_rev_div = soup_train.findAll("div",attrs={"class","card cardResult"})
+        trainstatus_rev_div = str(trainstatus_rev_div)
+        # print("trainstatus_rev_div:",trainstatus_rev_div)
+        departure_station = re.search(r'from<strong>(.*?)</strong>', trainstatus_rev_div).group(1)
+        #print("Departed From :",departure_station)
 
-    #code for arrival station
-    navigation = soup_train.findAll("div",attrs={"class","well well-sm"})
-    dummy_arrstation = navigation
-    navigation = str(navigation)
-    arr_station = soup_train.findAll("div",attrs={"class","col-7 col-md-4"})
-    arr_station = str(arr_station)
-    arrival_station = re.search(r'<div class="col-7 col-md-4"><span class="ind-crossed"><i aria-hidden="true" class="fa fa-circle-thin"></i></span>(.*?)</div>',arr_station).group(1)
-    #print("Arrival_station at :",arrival_station)
+        #code for arrival station
+        navigation = soup_train.findAll("div",attrs={"class","well well-sm"})
+        dummy_arrstation = navigation
+        navigation = str(navigation)
+        arr_station = soup_train.findAll("div",attrs={"class","col-7 col-md-4"})
+        arr_station = str(arr_station)
+        arrival_station = re.search(r'<div class="col-7 col-md-4"><span class="ind-crossed"><i aria-hidden="true" class="fa fa-circle-thin"></i></span>(.*?)</div>',arr_station).group(1)
+        #print("Arrival_station at :",arrival_station)
 
-    #code for platform details like arrival time, departed time,haukt and platform number
-    url_trainstatus = "https://www.trainman.in/train/"+str(train_no)
-    trainstatus_response = requests.get(url_trainstatus)
-    soup_train = bs(trainstatus_response.content, 'html.parser') 
-    dom = etree.HTML(str(soup_train))
-    newdetail = soup_train.findAll("tr",attrs={"class","ng-star-inserted"})
-    newdetail = str(newdetail)
-    station_list = []    
-    for i in range(1,100):
-        current_list = []
-        n2 = dom.xpath('/html/body/app-root/app-wrapper/div/main/train-schedule/div[2]/div[1]/div/div[3]/table/tbody/tr['+ str(i) +']/td[2]/strong/text()')
-        t2 = dom.xpath('/html/body/app-root/app-wrapper/div/main/train-schedule/div[2]/div[1]/div/div[3]/table/tbody/tr['+ str(i) +']/td[3]/div[1]/time/text()')
-        d2 = dom.xpath('/html/body/app-root/app-wrapper/div/main/train-schedule/div[2]/div[1]/div/div[3]/table/tbody/tr['+ str(i) +']/td[3]/div[2]/time/text()')
-        h2 = dom.xpath('/html/body/app-root/app-wrapper/div/main/train-schedule/div[2]/div[1]/div/div[3]/table/tbody/tr['+ str(i) +']/td[4]/time/text()')
-        p2 = dom.xpath('/html/body/app-root/app-wrapper/div/main/train-schedule/div[2]/div[1]/div/div[3]/table/tbody/tr['+ str(i) +']/td[7]/text()')
-        
-        if len(n2) != 0 :
-            station_info = {'name' : n2, 'arrival' : t2, 'departure' : d2, 'hault' : h2, 'platform' : p2}
+        #code for platform details like arrival time, departed time,haukt and platform number
+        url_trainstatus = "https://www.trainman.in/train/"+str(train_no)
+        trainstatus_response = requests.get(url_trainstatus)
+        soup_train = bs(trainstatus_response.content, 'html.parser') 
+        dom = etree.HTML(str(soup_train))
+        newdetail = soup_train.findAll("tr",attrs={"class","ng-star-inserted"})
+        newdetail = str(newdetail)
+        station_list = []    
+        for i in range(1,100):
+            current_list = []
+            n2 = dom.xpath('/html/body/app-root/app-wrapper/div/main/train-schedule/div[2]/div[1]/div/div[3]/table/tbody/tr['+ str(i) +']/td[2]/strong/text()')
+            t2 = dom.xpath('/html/body/app-root/app-wrapper/div/main/train-schedule/div[2]/div[1]/div/div[3]/table/tbody/tr['+ str(i) +']/td[3]/div[1]/time/text()')
+            d2 = dom.xpath('/html/body/app-root/app-wrapper/div/main/train-schedule/div[2]/div[1]/div/div[3]/table/tbody/tr['+ str(i) +']/td[3]/div[2]/time/text()')
+            h2 = dom.xpath('/html/body/app-root/app-wrapper/div/main/train-schedule/div[2]/div[1]/div/div[3]/table/tbody/tr['+ str(i) +']/td[4]/time/text()')
+            p2 = dom.xpath('/html/body/app-root/app-wrapper/div/main/train-schedule/div[2]/div[1]/div/div[3]/table/tbody/tr['+ str(i) +']/td[7]/text()')
 
-        elif len(n2) == 0:
-            break
+            if len(n2) != 0 :
+                station_info = {'name' : n2, 'arrival' : t2, 'departure' : d2, 'hault' : h2, 'platform' : p2}
 
-        station_list.append(station_info)
+            elif len(n2) == 0:
+                break
+
+            station_list.append(station_info)
+
+    except:
+        st.info('error occured')
         
     return coach_line, departure_station, arrival_station, station_list
 
