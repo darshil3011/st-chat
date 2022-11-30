@@ -65,24 +65,26 @@ def train_info(train_no):
         #print("Coach::",coach_line)
        
         #code for departed station
-        #url_trainstatus = "https://www.railmitra.com/live-train-running-status/" + str(train_no)
-        #trainstatus_response = requests.get(url_trainstatus)
-        #soup_train = bs(trainstatus_response.content, 'html.parser') 
-        #trainstatus_rev_div = soup_train.findAll("div",attrs={"class","card cardResult"})
-        #trainstatus_rev_div = str(trainstatus_rev_div)
-        # print("trainstatus_rev_div:",trainstatus_rev_div)
-        #departure_station = re.search(r'from<strong>(.*?)</strong>', trainstatus_rev_div).group(1)
-        #print("Departed From :",departure_station)
-
-        #code for arrival station
-        #navigation = soup_train.findAll("div",attrs={"class","well well-sm"})
-        #dummy_arrstation = navigation
-        #navigation = str(navigation)
-        #arr_station = soup_train.findAll("div",attrs={"class","col-7 col-md-4"})
-        #arr_station = str(arr_station)
-        #arrival_station = re.search(r'<div class="col-7 col-md-4"><span class="ind-crossed"><i aria-hidden="true" class="fa fa-circle-thin"></i></span>(.*?)</div>',arr_station).group(1)
-        #print("Arrival_station at :",arrival_station)
+        url_trainstatus = "https://www.railmitra.com/live-train-running-status/" + str(train_no)
+        trainstatus_response = requests.get(url_trainstatus)
+        soup_train = bs(trainstatus_response.content, 'html.parser') 
+        trainstatus_rev_div = soup_train.findAll("div",attrs={"class","card cardResult"})
+        trainstatus_rev_div = str(trainstatus_rev_div)
+        try:
+            departure_station = re.search(r'from<strong>(.*?)</strong>', trainstatus_rev_div).group(1)
+        except:
+            departure_station = 'None'
         
+        #code for arrival station
+        navigation = soup_train.findAll("div",attrs={"class","well well-sm"})
+        dummy_arrstation = navigation
+        navigation = str(navigation)
+        arr_station = soup_train.findAll("div",attrs={"class","col-7 col-md-4"})
+        arr_station = str(arr_station)
+        try:
+            arrival_station = re.search(r'<div class="col-7 col-md-4"><span class="ind-crossed"><i aria-hidden="true" class="fa fa-circle-thin"></i></span>(.*?)</div>',arr_station).group(1)
+        except:
+            arrival_station = 'None'
         
         #code for platform details like arrival time, departed time,haukt and platform number
         url_trainstatus = "https://www.trainman.in/train/"+str(train_no)
@@ -108,9 +110,6 @@ def train_info(train_no):
 
             station_list.append(station_info)
     
-        departure_station = 'test'
-        arrival_station = 'test'
-    
     except:
         st.info('error occured')
         
@@ -127,7 +126,7 @@ def get_train():
     #    text_input_container.empty()
     train = text_input_container.selectbox(
      'Select train no',
-     ('00000 - I am not travelling', '12932 - Double Decker Express', '12010 - Shatabdi Express', '12901 - Gujarat Mail', '82902 - Tejas Express'))
+     ('00000 - I am not travelling', '12932 - Double Decker Express', '12010 - Shatabdi Express', '12901 - Gujarat Mail', '82902 - Tejas Express', '12480 - Suryangari Express'))
     if train != '00000 - I am not travelling':
         text_input_container.empty()
     train = train[0:5]
@@ -218,8 +217,11 @@ if user_input:
     elif intent == 8:
         train_input = st.session_state.train
         coach_line, departure_station, arrival_station, station_list = train_info(int(train_input))
-        response = "Your train has departed from "+str(departure_station)+" and will arrive to "+str(arrival_station) 
-        
+        if departure_station != ' None' and arrival_station != 'None':
+            response = "Your train has departed from "+str(departure_station)+" and will arrive to "+str(arrival_station) 
+        else:
+            response = "There was a problem fetching current status. Please visit https://www.railmitra.com/live-train-running-status/"+str(train_input)
+            
     elif intent == 9:
         response = "Unfortunately I cant do that for you right now !"
 
