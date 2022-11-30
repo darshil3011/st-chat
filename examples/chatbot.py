@@ -63,8 +63,7 @@ def train_info(train_no):
         # finding all the p tags to fetch only the review text
             coach_line.append(rev_div[j].find("b").text)
         #print("Coach::",coach_line)
-        
-        '''
+       
         #code for departed station
         #url_trainstatus = "https://www.railmitra.com/live-train-running-status/" + str(train_no)
         #trainstatus_response = requests.get(url_trainstatus)
