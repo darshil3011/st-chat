@@ -63,7 +63,8 @@ def train_info(train_no):
         # finding all the p tags to fetch only the review text
             coach_line.append(rev_div[j].find("b").text)
         #print("Coach::",coach_line)
-
+        
+        '''
         #code for departed station
         url_trainstatus = "https://www.railmitra.com/live-train-running-status/" + str(train_no)
         trainstatus_response = requests.get(url_trainstatus)
@@ -82,7 +83,8 @@ def train_info(train_no):
         arr_station = str(arr_station)
         arrival_station = re.search(r'<div class="col-7 col-md-4"><span class="ind-crossed"><i aria-hidden="true" class="fa fa-circle-thin"></i></span>(.*?)</div>',arr_station).group(1)
         #print("Arrival_station at :",arrival_station)
-
+        '''
+        
         #code for platform details like arrival time, departed time,haukt and platform number
         url_trainstatus = "https://www.trainman.in/train/"+str(train_no)
         trainstatus_response = requests.get(url_trainstatus)
@@ -106,7 +108,10 @@ def train_info(train_no):
                 break
 
             station_list.append(station_info)
-
+    
+    departure_station = 'test'
+    arrival_station = 'test'
+    
     except:
         st.info('error occured')
         
