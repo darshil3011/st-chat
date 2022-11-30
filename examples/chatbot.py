@@ -178,7 +178,7 @@ if user_input:
             if location in str(i).lower():
                 output = i
         #station_table = pd.DataFrame.from_dict(station_list, orient='columns')
-        d = location
+        d = output
         
         if d != 'Null':
         
