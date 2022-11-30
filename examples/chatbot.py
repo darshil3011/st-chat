@@ -66,24 +66,24 @@ def train_info(train_no):
         
         '''
         #code for departed station
-        url_trainstatus = "https://www.railmitra.com/live-train-running-status/" + str(train_no)
-        trainstatus_response = requests.get(url_trainstatus)
-        soup_train = bs(trainstatus_response.content, 'html.parser') 
-        trainstatus_rev_div = soup_train.findAll("div",attrs={"class","card cardResult"})
-        trainstatus_rev_div = str(trainstatus_rev_div)
+        #url_trainstatus = "https://www.railmitra.com/live-train-running-status/" + str(train_no)
+        #trainstatus_response = requests.get(url_trainstatus)
+        #soup_train = bs(trainstatus_response.content, 'html.parser') 
+        #trainstatus_rev_div = soup_train.findAll("div",attrs={"class","card cardResult"})
+        #trainstatus_rev_div = str(trainstatus_rev_div)
         # print("trainstatus_rev_div:",trainstatus_rev_div)
-        departure_station = re.search(r'from<strong>(.*?)</strong>', trainstatus_rev_div).group(1)
+        #departure_station = re.search(r'from<strong>(.*?)</strong>', trainstatus_rev_div).group(1)
         #print("Departed From :",departure_station)
 
         #code for arrival station
-        navigation = soup_train.findAll("div",attrs={"class","well well-sm"})
-        dummy_arrstation = navigation
-        navigation = str(navigation)
-        arr_station = soup_train.findAll("div",attrs={"class","col-7 col-md-4"})
-        arr_station = str(arr_station)
-        arrival_station = re.search(r'<div class="col-7 col-md-4"><span class="ind-crossed"><i aria-hidden="true" class="fa fa-circle-thin"></i></span>(.*?)</div>',arr_station).group(1)
+        #navigation = soup_train.findAll("div",attrs={"class","well well-sm"})
+        #dummy_arrstation = navigation
+        #navigation = str(navigation)
+        #arr_station = soup_train.findAll("div",attrs={"class","col-7 col-md-4"})
+        #arr_station = str(arr_station)
+        #arrival_station = re.search(r'<div class="col-7 col-md-4"><span class="ind-crossed"><i aria-hidden="true" class="fa fa-circle-thin"></i></span>(.*?)</div>',arr_station).group(1)
         #print("Arrival_station at :",arrival_station)
-        '''
+        
         
         #code for platform details like arrival time, departed time,haukt and platform number
         url_trainstatus = "https://www.trainman.in/train/"+str(train_no)
@@ -182,14 +182,14 @@ if user_input:
         train_input = st.session_state.train
         coach_line, departure_station, arrival_station, station_list = train_info(int(train_input))
         location = get_loc(station_list)
-        if location != 'Null':
+        Try:
             for i in station_list:
                 if location.lower() in str(i).lower():
                     output = i
                 #station_table = pd.DataFrame.from_dict(station_list, orient='columns')
             d = output
-        
-        
+
+
             if len(d['arrival']) != 0 and len(d['platform']) != 0 and len(d['hault']) != 0: 
                 output_string = 'At ' + d['name'][0] + ' train will arrive on platform number ' + str(d['platform'][0]) + ' at ' + str(d['arrival'][0]) + ' and will hault for ' + str(d['hault'][0])
             elif len(d['arrival']) == 0:
@@ -200,7 +200,10 @@ if user_input:
                 output_string = 'At ' + d['name'][0] + ' train will arrive on platform number ' + str(d['platform'][0]) + ' at ' + str(d['arrival'][0]) + '. This is the final destination.'
 
             response = str(output_string)
-   
+        
+        except:
+            response = 'Please Choose station'
+            
     elif intent == 5:
         response = "hmmm.. what else ?" 
     
