@@ -230,15 +230,18 @@ if user_input:
 
     elif intent == 11:
         pnr = get_pnr()
-        ticket = pnr_status(pnr)
-        entire_ticket = []
-        p = 0
-        for i in range (0, len(ticket),4):
-            p = p+1
-            required_info = ticket[i:i+4]
-            entire_ticket.append(" PASSENGER "+str(p)+", BOOKING STATUS : "+required_info[1]+ ", CURRENT STATUS : "+required_info[2]+", CONFIRM STATUS :"+required_info[3])
-        response = "Your PNR status is : "+str(entire_ticket) 
-        
+        if len(pnr) != 10:
+            ticket = pnr_status(pnr)
+            entire_ticket = []
+            p = 0
+            for i in range (0, len(ticket),4):
+                p = p+1
+                required_info = ticket[i:i+4]
+                entire_ticket.append(" PASSENGER "+str(p)+", BOOKING STATUS : "+required_info[1]+ ", CURRENT STATUS : "+required_info[2]+", CONFIRM STATUS :"+required_info[3])
+            response = "Your PNR status is : "+str(entire_ticket) 
+        else:
+            response = "Enter 10 digit PNR"
+            
     elif intent == 12:
         train_input = st.session_state.train
         coach_line, departure_station, arrival_station, station_list = train_info(int(train_input))
