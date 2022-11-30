@@ -109,8 +109,8 @@ def train_info(train_no):
 
             station_list.append(station_info)
     
-    departure_station = 'test'
-    arrival_station = 'test'
+        departure_station = 'test'
+        arrival_station = 'test'
     
     except:
         st.info('error occured')
