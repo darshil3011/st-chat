@@ -134,9 +134,10 @@ def get_loc(station_list):
     for i in station_list:
         station_dropdown.append(i['name'][0])
     
+    station_dropdown.insert(0,'Null')
     text_input_container = st.empty()
     location = text_input_container.selectbox('Enter current station:', options=station_dropdown)
-    if location != '':
+    if location != 'Null':
         text_input_container.empty()
     
     return location
