@@ -123,7 +123,7 @@ def get_train():
     #    text_input_container.empty()
     train = text_input_container.selectbox(
      'Select train no',
-     ('00000 - I am not travelling', '12932 - Double Decker Express', '12010 - Shatabdi Express', '12901 - Gujarat Mail'))
+     ('00000 - I am not travelling', '12932 - Double Decker Express', '12010 - Shatabdi Express', '12901 - Gujarat Mail', '82902 - Tejas Express'))
     if train != '00000 - I am not travelling':
         text_input_container.empty()
     train = train[0:5]
@@ -153,11 +153,11 @@ if user_input:
     intent = chat(user_input)
   
     if intent == 0 or intent == 2: 
-        response = "I am your travel partner. I can answer all your queries related to train journey. Lets start with your train name and PNR no."
+        response = "I am your travel partner. I can answer all your queries related to train journey. Which train are you travelling in ?"
         train_no = get_train()
         st.session_state.train = train_no
         if train_no != '00000':
-            response = 'I am your travel partner. I can answer all your queries related to train journey. Lets start with your train name and PNR no. Your train no is ' + str(train_no)
+            response = 'I am your travel partner. I can answer all your queries related to train journey. Your train no is ' + str(train_no)
 
     elif intent == 1: 
         response = "We are available 24/7 to help you. Reach out to us on +91.9999 9999 or email us at enquire@thinkinbytes.in"
