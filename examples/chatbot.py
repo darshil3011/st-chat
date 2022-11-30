@@ -23,7 +23,7 @@ st.markdown("AI based NLP Chatbot powered by [Think In Bytes](https://www.thinki
 
 if st.button('Get Realtime SMS Updates'):
     Mobile_No = st.text_input("Mobile No", key="mobile")
-    PNR_Number = st.text_input("PNR No", key="pnr)
+    PNR_Number = st.text_input("PNR No", key="pnr")
     st.text(Mobile_No)
     st.text(PNR_Number)
 
