@@ -38,7 +38,6 @@ def chat(text):
 
 def pnr_status(pnr):
     url = "https://www.railmitra.com/pnr-status?pnr=" + str(pnr)
-    print(url)
     response = requests.get(url)
     soup = bs(response.content, 'html.parser') 
 
@@ -230,7 +229,7 @@ if user_input:
 
     elif intent == 11:
         pnr = get_pnr()
-        if len(pnr) != 10:
+        if len(pnr) == 10:
             ticket = pnr_status(pnr)
             entire_ticket = []
             p = 0
