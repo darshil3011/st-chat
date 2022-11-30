@@ -22,10 +22,10 @@ st.header("Rail Companion")
 st.markdown("AI based NLP Chatbot powered by [Think In Bytes](https://www.thinkinbytes.in)")
 
 if st.button('Get Realtime SMS Updates'):
-    Mobile No = st.text_input("Mob No", key="mobile")
-    PNR Number = st.text_input("PNR", key="pnr)
-    st.text(Mobile No)
-    st.text(PNR Number)
+    Mobile_No = st.text_input("Mobile No", key="mobile")
+    PNR_Number = st.text_input("PNR No", key="pnr)
+    st.text(Mobile_No)
+    st.text(PNR_Number)
 
 if 'train' not in st.session_state:
     st.session_state.train = ''
