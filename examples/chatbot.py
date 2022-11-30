@@ -18,8 +18,14 @@ st.set_page_config(
     page_icon=":robot:"
 )
 
-st.header("Chatbot")
-st.markdown("NLP Chatbot with Named Entity Recognition")
+st.header("Rail Companion")
+st.markdown("AI based NLP Chatbot powered by [Think In Bytes](https://www.thinkinbytes.in)")
+
+if st.button('Get Realtime SMS Updates'):
+    Mobile No = st.text_input("Mob No", key="mobile")
+    PNR Number = st.text_input("PNR", key="pnr)
+    st.text(Mobile No)
+    st.text(PNR Number)
 
 if 'train' not in st.session_state:
     st.session_state.train = ''
