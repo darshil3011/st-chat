@@ -174,9 +174,9 @@ if user_input:
         train_input = st.session_state.train
         coach_line, departure_station, arrival_station, station_list = train_info(int(train_input))
         location = get_loc(station_list)
-        #for i in station_list:
-        #    if location in str(i).lower():
-        #        output = i
+        for i in station_list:
+            if location in str(i).lower():
+                output = i
         #station_table = pd.DataFrame.from_dict(station_list, orient='columns')
         d = location
         
