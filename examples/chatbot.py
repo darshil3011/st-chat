@@ -135,13 +135,16 @@ def get_loc(station_list):
         station_dropdown.append(i['name'][0])
     
     station_dropdown.insert(0,'Null')
+    
     text_input_container = st.empty()
     location = text_input_container.selectbox('Enter current station:', options=station_dropdown)
     if location != 'Null':
         text_input_container.empty()
+        return location
+    else:
+        return None
     
-    return location
-
+    
 def get_pnr():
     text_input_container = st.empty()
     pnr = text_input_container.text_input("Enter PNR no:")
@@ -174,13 +177,13 @@ if user_input:
         train_input = st.session_state.train
         coach_line, departure_station, arrival_station, station_list = train_info(int(train_input))
         location = get_loc(station_list)
-        for i in station_list:
-            if location.lower() in str(i).lower():
-                output = i
-        #station_table = pd.DataFrame.from_dict(station_list, orient='columns')
-        d = output
+        if location != 'Null':
+            for i in station_list:
+                if location.lower() in str(i).lower():
+                    output = i
+                #station_table = pd.DataFrame.from_dict(station_list, orient='columns')
+            d = output
         
-        if d != 'Null':
         
             if len(d['arrival']) != 0 and len(d['platform']) != 0 and len(d['hault']) != 0: 
                 output_string = 'At ' + d['name'][0] + ' train will arrive on platform number ' + str(d['platform'][0]) + ' at ' + str(d['arrival'][0]) + ' and will hault for ' + str(d['hault'][0])
@@ -192,7 +195,7 @@ if user_input:
                 output_string = 'At ' + d['name'][0] + ' train will arrive on platform number ' + str(d['platform'][0]) + ' at ' + str(d['arrival'][0]) + '. This is the final destination.'
 
             response = str(output_string)
-        #response = "your station is: " + d
+   
     elif intent == 5:
         response = "hmmm.. what else ?" 
     
