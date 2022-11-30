@@ -181,7 +181,8 @@ if user_input:
         train_input = st.session_state.train
         coach_line, departure_station, arrival_station, station_list = train_info(int(train_input))
         location = get_loc(station_list)
-        Try:
+        
+        try:
             for i in station_list:
                 if location.lower() in str(i).lower():
                     output = i
