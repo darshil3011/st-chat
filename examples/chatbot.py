@@ -180,16 +180,18 @@ if user_input:
         #station_table = pd.DataFrame.from_dict(station_list, orient='columns')
         d = location
         
-        if len(d['arrival']) != 0 and len(d['platform']) != 0 and len(d['hault']) != 0: 
-            output_string = 'At ' + d['name'][0] + ' train will arrive on platform number ' + str(d['platform'][0]) + ' at ' + str(d['arrival'][0]) + ' and will hault for ' + str(d['hault'][0])
-        elif len(d['arrival']) == 0:
-            output_string = 'At ' + d['name'][0] + ' train will start from platform number ' + str(d['platform'][0]) + ' and will depart at ' + str(d['departure'][0]) 
-        elif len(d['platform']) == 0:
-            output_string = 'At ' + d['name'][0] + ' train will arrive at ' + str(d['arrival'][0]) + ' and will hault for ' + str(d['hault'][0]) + '. Platform is not yet decided !' 
-        elif len(d['departure']) == 0:
-            output_string = 'At ' + d['name'][0] + ' train will arrive on platform number ' + str(d['platform'][0]) + ' at ' + str(d['arrival'][0]) + '. This is the final destination.'
+        if d != 'Null':
         
-        response = str(output_string)
+            if len(d['arrival']) != 0 and len(d['platform']) != 0 and len(d['hault']) != 0: 
+                output_string = 'At ' + d['name'][0] + ' train will arrive on platform number ' + str(d['platform'][0]) + ' at ' + str(d['arrival'][0]) + ' and will hault for ' + str(d['hault'][0])
+            elif len(d['arrival']) == 0:
+                output_string = 'At ' + d['name'][0] + ' train will start from platform number ' + str(d['platform'][0]) + ' and will depart at ' + str(d['departure'][0]) 
+            elif len(d['platform']) == 0:
+                output_string = 'At ' + d['name'][0] + ' train will arrive at ' + str(d['arrival'][0]) + ' and will hault for ' + str(d['hault'][0]) + '. Platform is not yet decided !' 
+            elif len(d['departure']) == 0:
+                output_string = 'At ' + d['name'][0] + ' train will arrive on platform number ' + str(d['platform'][0]) + ' at ' + str(d['arrival'][0]) + '. This is the final destination.'
+
+            response = str(output_string)
         #response = "your station is: " + d
     elif intent == 5:
         response = "hmmm.. what else ?" 
