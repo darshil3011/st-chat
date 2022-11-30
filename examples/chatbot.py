@@ -129,9 +129,13 @@ def get_train():
     train = train[0:5]
     return train
 
-def get_loc():
+def get_loc(station_list):
+    station_dropdown = []
+    for i in station_list:
+        station_dropdown.append(i['name'][0])
+    
     text_input_container = st.empty()
-    location = text_input_container.text_input("Enter current station:")
+    location = text_input_container.selectbox('Enter current station:', options=station_dropdown)
     if location != '':
         text_input_container.empty()
     
@@ -168,7 +172,7 @@ if user_input:
     elif intent == 4: 
         train_input = st.session_state.train
         coach_line, departure_station, arrival_station, station_list = train_info(int(train_input))
-        location = get_loc()
+        location = get_loc(station_list)
         for i in station_list:
             if location in str(i).lower():
                 output = i
